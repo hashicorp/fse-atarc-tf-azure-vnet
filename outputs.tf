@@ -3,5 +3,5 @@ output "rg_name" {
 }
 
 output "rg_id" {
-  value = azurerm_resource_group.id
+  value = azurerm_resource_group.rg.id
 }
