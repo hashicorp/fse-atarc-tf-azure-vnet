@@ -155,4 +155,5 @@ output "vnet_name" {
 
 output "vnet_subnets" {
   value = module.vnet.vnet_subnets
-}```
+}
+```
