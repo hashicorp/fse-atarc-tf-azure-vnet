@@ -4,6 +4,11 @@ variable "name" {
   description = "Name that will flow through the VNET resources"
 }
 
+variable "region" {
+  type        = "eastus2"
+  description = "Region"
+}
+
 variable "subscription_id" {
   type        = string
   description = "Azure Subscription ID"
@@ -24,4 +29,3 @@ variable "tenant_id" {
   type        = string
   description = "Azure Tenant ID"
 }
-
