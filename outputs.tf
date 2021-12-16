@@ -27,5 +27,9 @@ output "vnet_subnets" {
 }
 
 output "subnet_0" {
-  value = module.vnet.azurerm_subnet.subnet[0].address_prefix
+  value = module.vnet.azurerm_subnet.subnet[0]
+}
+
+output "subnet_1" {
+  value = module.vnet.azurerm_subnet.subnet[1]
 }
