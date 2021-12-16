@@ -78,16 +78,19 @@ provider "azurerm" {
 ### variables.tf
 The following variables can be updated in the file or passed in during the execution of a `terraform plan` or a `terraform apply`
 
+
 **Example:**
+
 ```
-    terraform init
-    terraform apply \
-      -var="subscription_id=${ARM_SUBSCRIPTION_ID}" \ 
-      -var="client_id=${ARM_CLIENT_ID}" \  
-      -var="client_secret=${ARM_CLIENT_SECRET}" \ 
-      -var="tenant_id=${ARM_TENANT_ID}" \ 
-      -auto-approve
- ```
+terraform init
+terraform apply \
+-var="subscription_id=${ARM_SUBSCRIPTION_ID}" \ 
+-var="client_id=${ARM_CLIENT_ID}" \  
+-var="client_secret=${ARM_CLIENT_SECRET}" \ 
+-var="tenant_id=${ARM_TENANT_ID}" \ 
+-auto-approve
+```
+
 
 ```hcl tangle:./variables.tf
 
