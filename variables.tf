@@ -1,4 +1,9 @@
 
+variable "name" {
+  type        = string
+  description = "Name that will flow through the VNET resources"
+}
+
 variable "subscription_id" {
   type        = string
   description = "Azure Subscription ID"

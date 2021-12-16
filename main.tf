@@ -1,6 +1,6 @@
 
-resource "azurerm_resource_group" "ztarg" {
-  name     = "zt-azure-resource-group"
+resource "azurerm_resource_group" "rg" {
+  name     = "${var.name}-resource-group"
   location = "East US"
 }
 
@@ -9,7 +9,7 @@ module "vnet" {
   resource_group_name = azurerm_resource_group.ztarg.name
   address_space       = ["10.1.0.0/16"]
   subnet_prefixes     = ["10.1.1.0/24", "10.1.2.0/24"]
-  subnet_names        = ["zt-azure-subnet-a", "zt-azure-subnet-b"]
+  subnet_names        = ["${var.name}-azure-subnet-a", "${var.name}-azure-subnet-b"]
 
   subnet_service_endpoints = {
     subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
@@ -21,6 +21,6 @@ module "vnet" {
     Environment = "development"
   }
 
-  depends_on = [azurerm_resource_group.ztarg]
+  depends_on = [azurerm_resource_group.rg]
 }
 
