@@ -5,7 +5,7 @@ variable "name" {
 }
 
 variable "region" {
-  type        = "eastus2"
+  type        = string
   description = "Region"
 }
 
