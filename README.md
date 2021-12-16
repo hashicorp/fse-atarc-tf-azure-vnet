@@ -46,8 +46,13 @@ The statefile will not be created until a `terraform init` is run.
 ```hcl tangle:./backend.tf
 terraform {
   required_version = "~> 1.0.11"
-  backend "local" {
-    path = "./terraform.tfstate"
+  backend "remote" {
+    hostname = "app.terraform.io"
+    organization = "PublicSector-ATARC"
+
+    workspaces {
+      name = "fse-tf-atarc-azure-vnet"
+    }
   }
 }
 ```
@@ -120,4 +125,15 @@ variable "tenant_id" {
   description = "Azure Tenant ID"
 }
 
+```
+
+
+```hcl tangle:./outputs.tf
+output "rg_name" {
+  value = azurerm_resource_group.rg_name
+}
+
+output "rg_id" {
+  value = azurerm_resource_group.rg_id
+}
 ```
