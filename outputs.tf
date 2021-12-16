@@ -11,11 +11,11 @@ output "cidr" {
 }
 
 output "subnet_gateway" {
-  value = azurerm_subnet.subnet_gateway.address_prefix
+  value = azurerm_subnet.subnet_gateway.address_prefixes[0]
 }
 
 output "subnet_1" {
-  value = azurerm_subnet.subnet_1.address_prefix
+  value = azurerm_subnet.subnet_1.address_prefixes[0]
 }
 
 output "subnet_gateway_id" {
