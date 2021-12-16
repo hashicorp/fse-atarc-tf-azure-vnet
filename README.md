@@ -11,29 +11,33 @@ The [Azure VNET module](https://registry.terraform.io/modules/Azure/vnet/azurerm
 
 ```hcl tangle:./main.tf
 
-resource "azurerm_resource_group" "rg" {
-  name     = "${var.name}-resource-group"
-  location = "East US"
+resource "azurerm_resource_group" "resource_group" {
+  name     = "resource_group"
+  location = var.region
 }
 
-module "vnet" {
-  source              = "Azure/vnet/azurerm"
-  resource_group_name = azurerm_resource_group.rg.name
+resource "azurerm_virtual_network" "vnet" {
+  name                = "vnet"
+  location            = azurerm_resource_group.resource_group.location
+  resource_group_name = azurerm_resource_group.resource_group.name
   address_space       = ["10.1.0.0/16"]
-  subnet_prefixes     = ["10.1.1.0/24", "10.1.2.0/24"]
-  subnet_names        = ["${var.name}-azure-subnet-a", "${var.name}-azure-subnet-b"]
+}
 
-  subnet_service_endpoints = {
-    subnet2 = ["Microsoft.Storage", "Microsoft.Sql"],
-    subnet3 = ["Microsoft.AzureActiveDirectory"]
-  }
+resource "azurerm_subnet" "subnet_1" {
+  name                 = "subnet_1"
+  resource_group_name  = azurerm_resource_group.resource_group.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefix       = "10.1.1.0/24"
+}
 
-  tags = {
-    Terraform   = "true"
-    Environment = "development"
-  }
-
-  depends_on = [azurerm_resource_group.rg]
+# The VPN Tunnel Subnet
+resource "azurerm_subnet" "subnet_gateway" {
+  # The name "GatewaySubnet" is mandatory
+  # Only one "GatewaySubnet" is allowed per vNet
+  name                 = "GatewaySubnet"
+  resource_group_name  = azurerm_resource_group.resource_group.name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefix       = "10.1.2.0/24"
 }
 
 ```
@@ -99,29 +103,34 @@ terraform apply \
 
 ```hcl tangle:./variables.tf
 
-variable "name" { 
-  type    = string
+variable "name" {
+  type        = string
   description = "Name that will flow through the VNET resources"
 }
 
-variable "subscription_id" { 
-  type    = string
+variable "region" {
+  type        = string
+  description = "Region"
+}
+
+variable "subscription_id" {
+  type        = string
   description = "Azure Subscription ID"
 }
 
-variable "client_id" { 
-  type    = string
+variable "client_id" {
+  type        = string
   description = "Azure Client ID"
 }
 
-variable "client_secret" { 
-  type    = string
+variable "client_secret" {
+  type        = string
   description = "Azure Client secret"
-  sensitive = true
+  sensitive   = true
 }
 
 variable "tenant_id" {
-  type = string
+  type        = string
   description = "Azure Tenant ID"
 }
 
@@ -130,32 +139,32 @@ variable "tenant_id" {
 
 ```hcl tangle:./outputs.tf
 
-output "rg_name" {
-  value = azurerm_resource_group.rg.name
+
+output "location" {
+  value = azurerm_resource_group.resource_group.location
+  description = "Resource Group Location"
 }
 
-output "rg_id" {
-  value = azurerm_resource_group.rg.id
+output "cidr" {
+  value = azurerm_virtual_network.vnet.address_space[0]
+  description = "Address CIDR"
 }
 
-output "vnet_cidr" {
-  value = module.vnet.vnet_address_space
+output "subnet_gateway"  {
+  value = azurerm_subnet.subnet_gateway.address_prefix
 }
 
-output "vnet_id" {
-  value = module.vnet.vnet_id
+output "subnet_1"  {
+  value = azurerm_subnet.subnet_1.address_prefix
 }
 
-output "vnet_location" {
-  value = module.vnet.vnet_location
+output "subnet_gateway_id"  {
+  value = azurerm_subnet.subnet_gateway.id
 }
 
-output "vnet_name" {
-  value = module.vnet.vnet_name
+output "subnet_1_id"  {
+  value = azurerm_subnet.subnet_1.id
 }
 
-output "vnet_subnets" {
-  value = module.vnet.vnet_subnets
-}
 
 ```
