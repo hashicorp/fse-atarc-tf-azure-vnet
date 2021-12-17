@@ -138,11 +138,17 @@ variable "tenant_id" {
 
 
 ```hcl tangle:./outputs.tf
-
-
 output "location" {
   value = azurerm_resource_group.resource_group.location
   description = "Resource Group Location"
+}
+
+output "rg_name" {
+  value = azurerm_resource_group.resource_group.name
+}
+
+output "rg_id" {
+  value = azurerm_resource_group.resource_group.id
 }
 
 output "cidr" {
