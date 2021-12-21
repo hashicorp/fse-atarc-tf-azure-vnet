@@ -4,7 +4,7 @@ variable "name" {
   description = "Name that will flow through the VNET resources"
 }
 
-variable "region" {
+variable "azure_region" {
   type        = string
   description = "Region"
 }
