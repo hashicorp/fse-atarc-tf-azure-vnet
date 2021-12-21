@@ -7,6 +7,7 @@ variable "name" {
 variable "azure_region" {
   type        = string
   description = "Region"
+  default     = "eastus2"
 }
 
 variable "subscription_id" {
