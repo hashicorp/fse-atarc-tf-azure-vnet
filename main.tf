@@ -2,14 +2,6 @@
 resource "azurerm_resource_group" "resource_group" {
   name     = "resource_group"
   location = var.azure_region
-  tags {
-    Se-region          = var.azure_region
-    Purpose            = "${var.name}-demo"
-    ttl                = "1"
-    terraform          = true
-    hc-internet-facing = false
-    DoNotDelete        = false
-  }
 }
 
 resource "azurerm_virtual_network" "vnet" {
